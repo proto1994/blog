@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>测试</title>
+  </head>
+  <body>
+    <input  />
+  </body>
+  <!-- <script src="./debounce.js"></script> -->
+  <script>
+    const input = document.querySelector('input');
+
+    input.addEventListener('input', debounce(function(e) {
+      console.log(e.target.value, this)
+    },  1000,))
+
+    function debounce(fn, wait) {
+      let lastCallTime = 0,
+          lastArgs,
+          lastThis,
+          result,
+          timerId = null;
+      
+      function shouldInvoke(time) {
+        const timeSinceLastCall = time - lastCallTime;
+        return lastCallTime === 0 || timeSinceLastCall >= wait;
+      }
+      
+      function leadingEdge() {
+        timerId = startTime(timerExpired, wait);
+        return result;
+      } 
+      
+      function timerExpired() {
+        let dateNow = Date.now();
+        if (shouldInvoke(dateNow)) {
+          return invokeFunc(dateNow);
+        }
+        timerId = startTime(timerExpired, remainningWait(dateNow));
+      }
+      
+      function invokeFunc(time) {
+        result = fn.apply(lastThis, lastArgs);
+        lastCallTime = 0;
+        lastArgs = undefined;
+        lastThis = undefined;
+        return result;
+      }
+      
+      function remainningWait(time) {
+        const timeSinceLastCall = time - lastCallTime;
+        return wait - timeSinceLastCall;
+      }
+      
+      function startTime(pendingFunc, wait) {
+        return setTimeout(pendingFunc, wait);
+      }
+      
+      function debounced(...args) {
+        let dateNow = Date.now();
+        const isInvoking = shouldInvoke(dateNow);
+        lastCallTime = dateNow;
+        lastArgs = args;
+        lastThis = this;
+        if (isInvoking) {
+          return leadingEdge(dateNow)
+        }
+      }
+      return debounced;
+    }
+  </script>
+</html>
