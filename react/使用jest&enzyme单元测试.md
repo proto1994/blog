@@ -78,6 +78,15 @@ import 'jsdom-global/register';
 
 
 
+## 5. 常用jest方法
+
+```js
+// 检查对象中是否含有某属性
+ expect(wrapperProps).toHaveProperty('columnNums')
+```
+
+
+
 ## 参考
 
 1. [如何对react hooks进行单元测试](https://segmentfault.com/a/1190000020058166)
