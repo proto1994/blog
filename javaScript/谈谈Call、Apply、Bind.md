@@ -57,12 +57,14 @@ Function.prototype.myBind = function(context = window, ...args1) {
     throw new TypeError('error')
   }
   const _this = this;
-  return function F(...args2) {
+  function F(...args2) {
     if (this instanceof F) {
       return new _this(...args1, ...args2);
     }
     return _this.apply(context, args1.concat(args2))
   }
+  F.prototype = Object.create(_this.prototype);
+  return F;
 }
 
 
